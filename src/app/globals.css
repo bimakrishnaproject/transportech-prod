@@ -1,0 +1,316 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fefefe;
+  --foreground: #1a1a1a;
+  --card-bg: #ffffff;
+  --card-hover: #fafafa;
+  --border: #e8e8e8;
+  --border-subtle: #f0f0f0;
+  --muted: #6b6b6b;
+  --muted-light: #9a9a9a;
+  --accent: #1a1a1a;
+  --accent-hover: #2a2a2a;
+  --surface: #ffffff;
+  --surface-elevated: #fafafa;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --card-bg: #141414;
+  --card-hover: #1a1a1a;
+  --border: #262626;
+  --border-subtle: #1f1f1f;
+  --muted: #8a8a8a;
+  --muted-light: #6b6b6b;
+  --accent: #f5f5f5;
+  --accent-hover: #e5e5e5;
+  --surface: #141414;
+  --surface-elevated: #1a1a1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+/* Abstract background pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+  background-image: 
+    linear-gradient(90deg, transparent 0%, var(--foreground) 1px, transparent 1px),
+    linear-gradient(0deg, transparent 0%, var(--foreground) 1px, transparent 1px),
+    linear-gradient(45deg, transparent 0%, var(--foreground) 0.5px, transparent 0.5px),
+    linear-gradient(-45deg, transparent 0%, var(--foreground) 0.5px, transparent 0.5px);
+  background-size: 
+    60px 60px,
+    60px 60px,
+    120px 120px,
+    120px 120px;
+  background-position: 
+    0 0,
+    0 0,
+    0 0,
+    0 0;
+  animation: backgroundShift 20s linear infinite;
+}
+
+.dark body::before {
+  opacity: 0.05;
+}
+
+@keyframes backgroundShift {
+  0% {
+    background-position: 
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+  100% {
+    background-position: 
+      60px 60px,
+      60px 60px,
+      120px 120px,
+      120px 120px;
+  }
+}
+
+/* Abstract gradient overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.01) 0%, transparent 70%);
+  opacity: 1;
+}
+
+.dark body::after {
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.01) 0%, transparent 70%);
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-light);
+  background-clip: padding-box;
+}
+
+/* Refined focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 1.5px solid var(--foreground);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Refined selection */
+::selection {
+  background: rgba(26, 26, 26, 0.12);
+  color: inherit;
+}
+
+.dark ::selection {
+  background: rgba(245, 245, 245, 0.18);
+  color: inherit;
+}
+
+/* Refined pulse for loading */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Subtle fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Stagger animation for grid items */
+@keyframes staggerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-stagger {
+  animation: staggerFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+/* Smooth scale animation */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    to right,
+    var(--surface-elevated) 0%,
+    var(--border-subtle) 50%,
+    var(--surface-elevated) 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Smooth slide up */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Typography utilities */
+.font-sans {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+/* Refined text styles */
+.text-refined {
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.text-subtle {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Input placeholder styling */
+input::placeholder {
+  color: var(--muted-light);
+}
+
+/* Hide scrollbar for thumbnail strip */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth carousel animations - hardware accelerated */
+@supports (transform: translateX(0)) {
+  .carousel-slide {
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+}
